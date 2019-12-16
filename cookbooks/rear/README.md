@@ -29,9 +29,11 @@ Platform
 
 Cookbook
 ========
-chef-client -r rear::default  (runs recipe default and recipe configure)
-chef-client -r rear::unconfigure (to define rear_netfs_url=N/A in the /etc/install/config and disable rear mkbackup)
-chef-client -r rear::remove {to unconfigure and remove ReaR software)
+`chef-client -r rear::default`  (runs recipe default and recipe configure)
+
+`chef-client -r rear::unconfigure` (to define rear_netfs_url=N/A in the /etc/install/config and disable rear mkbackup)
+
+`chef-client -r rear::remove` (to unconfigure and remove ReaR software)
 
 
 Attributes
@@ -39,7 +41,7 @@ Attributes
 - `node['rear']['force_configuration'] = false` - To force the ReaR configuration with the VM snapshot backup (normally ReaR gets disabled)
 - `node['rear']['config']['backup'] = 'NETFS'` - The backup method NETFS means use NFS
 - `node['rear']['config']['backup_url'] = 'nfs://nas.example.com/vol/linux_images_1/'` - The URL with the NFS archive location
-- `node['rear']['config']['backup_prog_exclude'] = '( ${BACKUP_PROG_EXCLUDE[@]} )'` - add any file or directory to exclude from the archive
+- `node['rear']['config']['backup_prog_exclude'] = '( ${BACKUP_PROG_EXCLUDE[@]} '` - add any file or directory to exclude from the archive
 - `node['rear']['config']['netfs_prefix'] = 'image'` - name of the sub-directory beneath the NFS archive location
 - `node['rear']['config']['netfs_keep_old_backup_copy'] = 'yes'` - keep a second copy of the archive
 - `node['rear']['config']['output'] = 'ISO'` - the OUTPUT method is by default an ISO image 
