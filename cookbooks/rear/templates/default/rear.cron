@@ -1,0 +1,2 @@
+/usr/sbin/rear mkbackup > /dev/null 2>&1
+echo exit code $? >> /var/log/rear/rear-$(hostname -s).log

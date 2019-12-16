@@ -1,0 +1,9 @@
+DEPENDENCIES
+  rear
+    path: .
+    metadata: true
+
+GRAPH
+  line (2.5.0)
+  rear (1.0.0)
+    line (>= 0.0.0)

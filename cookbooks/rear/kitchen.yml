@@ -1,0 +1,31 @@
+---
+driver:
+  name: vagrant
+  vm_hostname: client
+  network:
+    - ["private_network", {ip: "192.168.33.110"}]
+  synced_folders:
+    - ["../../install", "/etc/install", "create: true"]
+  customize:
+    memory: 2048 # configurations for the given OS
+
+provisioner:
+  name: chef_solo
+  always_update_cookbooks: true
+  client_rb:
+    chef_license: accept
+
+verifier:
+  name: inspec
+
+platforms:
+  - name: centos-7
+
+suites:
+  - name: default
+    run_list:
+      - recipe[rear::default]
+    verifier:
+      inspec_tests:
+        - test/integration/default
+    attributes:
