@@ -51,6 +51,11 @@ Attributes
 - `node['rear']['config']['ssh_root_password'] = '"relax"'` - a dummy password so that ssh daemon gets started on the rescue image
 - `node['rear']['config']['copy_as_is'] = '( "${COPY_AS_IS[@]}" /etc/oratab clear )'` - add here additional files (or commands) to be added to the rescue image
 
+Delivery test
+=============
+- `delivery local lint` or `chef exec cookstyle` 
+- `delivery local syntax` or `chef exec foodcritic . --exclude spec -f any # -t \"~FC064\" -t \"~FC065\"`
+- `delivery local unit` or `chef exec rspec test/`
 
 License and Author
 ==================
