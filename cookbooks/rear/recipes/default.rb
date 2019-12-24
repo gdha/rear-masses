@@ -19,7 +19,7 @@ file '/etc/cron.d/rear' do
   action :delete
 end
 
-################# OPC and file /etc/install/config must be present ###################
+################# if file /etc/install/config is present ###################
 if ::File.exist?('/etc/install/config')
 
   # Use the netfs_url from the /etc/install/config file
@@ -40,6 +40,6 @@ if ::File.exist?('/etc/install/config')
 
   return if rc_out == '0' && node['rear']['force_configuration'] == false
 
-  include_recipe 'rear::configure'
-
 end
+
+include_recipe 'rear::configure'

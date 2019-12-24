@@ -4,8 +4,8 @@ default['rear']['packages'] = %w(nfs-utils syslinux genisoimage redhat-lsb-core 
 # The temporary mount point required to mount NFS share onto (will be removed again)
 default['rear']['temp_dir'] = '/tmp/REAR-NFS-mnt'
 
-# Attribute which allow us to force the ReaR configuration altogether (VMs using snapshot backups will not configure
-# ReaR. In case, we define force_configuration = true then we will configure ReaR as such even when snapshots are used)
+# The following attribute allow us to force the ReaR configuration altogether.
+# In case, we define force_configuration = true then we will configure ReaR always.
 default['rear']['force_configuration'] = false
 
 # ReaR Configuration part
