@@ -4,9 +4,11 @@
 #
 # Copyright:: 2019, Gratien Dhaese, Apache 2.0
 
-# Fill attribute ['rear']['config']['backup_url'] with value "rear_netfs_url" retrieved from /etc/install/config file
-netfs_url = shell_out('grep ^rear_netfs_url /etc/install/config | cut -d= -f2-').stdout.chomp
-node.default['rear']['config']['backup_url'] = "#{netfs_url}/"
+if ::File.exist?('/etc/install/config')
+  # Fill attribute ['rear']['config']['backup_url'] with value "rear_netfs_url" retrieved from /etc/install/config file
+  netfs_url = shell_out('grep ^rear_netfs_url /etc/install/config | cut -d= -f2-').stdout.chomp
+  node.default['rear']['config']['backup_url'] = "#{netfs_url}/"
+end
 
 # Install all required packages for ReaR (we will ignore package install failures as this will be picked
 # up by the rear run when a required binary is missing). Otherwise, we would break the chef-client run altogether.
@@ -195,11 +197,14 @@ service 'nfs-client.target_rear' do
   only_if { platform_family?('rhel') && node['platform_version'].to_i == 7 }
 end
 
-# We require to have on the remote NFS server a store for our systems based on FQDN
-# Therefore, we need to extract the NFS server name from BACKUP_URL line
-nfs_server = shell_out('grep ^BACKUP_URL /etc/rear/local.conf | cut -d/ -f3').stdout.chomp
-# nfs_path = shell_out('grep ^BACKUP_URL /etc/rear/local.conf | cut -d/ -f4-').stdout.chomp
-nfs_path = shell_out('grep ^rear_netfs_url /etc/install/config | cut -d= -f2- | cut -d: -f2-').stdout.chomp
+if ::File.exist?('/etc/install/config')
+  # We require to have on the remote NFS server a store for our systems based on FQDN
+  nfs_server = shell_out('grep ^rear_netfs_url /etc/install/config | cut -d= -f2- | cut -d: -f1').stdout.chomp
+  nfs_path = shell_out('grep ^rear_netfs_url /etc/install/config | cut -d= -f2- | cut -d: -f2-').stdout.chomp
+else
+  nfs_server = shell_out('grep ^BACKUP_URL /etc/rear/local.conf | cut -d/ -f3').stdout.chomp
+  nfs_path = shell_out('grep ^BACKUP_URL /etc/rear/local.conf | cut -d/ -f4-').stdout.chomp
+end
 
 # Create a temporary directory under /tmp to mount the NFS share onto
 # If the /var/lib/rear/layout/disklayout.conf file exists then ReaR did already run once (no need for this anymore)
