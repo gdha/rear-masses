@@ -10,16 +10,15 @@ This chef cookbook must be able to run on RHEL 6 and RHEL 7:
 - RHEL 8 is using rear-2.4 (or above)
 
 Basically we configure ReaR when the ${rear_netfs_url}" != "N/A" (or rear_netfs_url is not missing) in the /etc/install/config
-- we remove the default 'rear' cron entry if above setting is "N/A" (or the config file is missing) as Ops complains a lot about the 'rear' cron entry failing
-  because the BACKUP_URL= contains "N/A" which is completely garbage of course
+- we remove the default 'rear' cron entry if above setting is "N/A" (or the config file is missing) as Ops complains a lot about the 'rear' cron entry failing because the BACKUP_URL= contains "N/A" which is completely garbage of course.
+- however, if the file `/etc/install/config` is missing we will configure ReaR using the default settings defined in the attributes file.
 
-Furthermore, the default recipe checks if this VM is using snapshots as backup, if yes, then we can skip the ReaR configuration unless we defined an attribute
-to force the ReaR configuration (`node['rear']['force_configuration']`).
+Furthermore, the default recipe checks if this VM is using snapshots as backup, if yes, then we can skip the ReaR configuration unless we defined an attribute to force the ReaR configuration (`node['rear']['force_configuration']`).
 
 Packages that we need as a pre-requisite are (same for RHEL 6 and 7):
 - nfs-utils syslinux genisoimage redhat-lsb-core net-tools rear mtools
 
-The /etc/rear/local.conf will be automatically configured via the predefined attributes
+The `/etc/rear/local.conf` will be automatically configured via the predefined attributes.
 
 Platform
 ========
