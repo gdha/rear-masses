@@ -290,6 +290,7 @@ To test the cookbook just run `kitchen converge`:
 To run the ReaR cookbook with InSpec rules use:
 
 ````
+$ kitchen verify
 ....
   System Package rear
      ✔  should be installed
@@ -302,3 +303,5 @@ Test Summary: 4 successful, 0 failures, 0 skipped
        Finished verifying <default-centos-7> (0m0.83s).
 -----> Test Kitchen is finished. (0m18.73s)
 ````
+
+And, finally, to remove the VM run `kitchen destroy`
