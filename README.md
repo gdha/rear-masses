@@ -287,3 +287,18 @@ To test the cookbook just run `kitchen converge`:
 -----> Test Kitchen is finished. (0m41.89s)
 ````
 
+To run the ReaR cookbook with InSpec rules use:
+
+````
+....
+  System Package rear
+     ✔  should be installed
+  File /etc/rear/local.conf
+     ✔  should exist
+     ✔  content should match /BACKUP=NETFS/
+     ✔  content should match /^BACKUP_URL=nfs:\/\//
+
+Test Summary: 4 successful, 0 failures, 0 skipped
+       Finished verifying <default-centos-7> (0m0.83s).
+-----> Test Kitchen is finished. (0m18.73s)
+````
