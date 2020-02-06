@@ -153,21 +153,29 @@ end
 replace_or_add 'fix script 55-migrate-network-devices.sh for eno LAN' do
   path '/usr/share/rear/skel/default/etc/scripts/system-setup.d/55-migrate-network-devices.sh'
   pattern '^RULE_FILES='
-  line 'RULE_FILES=( /etc/udev/rules.d/*persistent*{names,net,cd}.rules /etc/udev/rules.d/*eno-fix.rules )'
+  line 'RULE_FILES=( $( echo /etc/udev/rules.d/*persistent*{names,net,cd}.rules /etc/udev/rules.d/*eno-fix.rules ) )'
 end
 
 # Same for /usr/share/rear/finalize/GNU/Linux/410_migrate_udev_rules.sh (on rear-2.00)
-# Be careful as this script is renamed to 310_migrate_udev_rules.sh in rear-2.5 (back-ported?)
 replace_or_add 'fix script 410_migrate_udev_rules.sh for eno LAN' do
   path '/usr/share/rear/finalize/GNU/Linux/410_migrate_udev_rules.sh'
   pattern '^RULE_FILES='
-  line 'RULE_FILES=( /etc/udev/rules.d/*persistent*{names,net,cd}.rules /etc/udev/rules.d/*eno-fix.rules )'
+  line 'RULE_FILES=( $( echo /etc/udev/rules.d/*persistent*{names,net,cd}.rules /etc/udev/rules.d/*eno-fix.rules ) )'
+  only_if { ::File.exist?('/usr/share/rear/finalize/GNU/Linux/410_migrate_udev_rules.sh') }
+end
+
+# Be careful as the script 410_migrate_udev_rules.sh was renamed to 310_migrate_udev_rules.sh in rear-2.4
+replace_or_add 'fix script 310_migrate_udev_rules.sh for eno LAN' do
+  path '/usr/share/rear/finalize/GNU/Linux/310_migrate_udev_rules.sh'
+  pattern '^RULE_FILES='
+  line 'RULE_FILES=( $( echo /etc/udev/rules.d/*persistent*{names,net,cd}.rules /etc/udev/rules.d/*eno-fix.rules ) )'
+  only_if { ::File.exist?('/usr/share/rear/finalize/GNU/Linux/310_migrate_udev_rules.sh') }
 end
 
 # As we are using NFS to mount a remote NAS filer we need to verify that local
 # NFS services are running and enabled. As we are supporting different Linux
 # flavors and versions we need to work with if-blocks
-# For RHEL 6 and 7:
+# For RHEL 6, 7 and 8:
 service 'rpcbind_rear' do
   service_name 'rpcbind'
   supports status: true, restart: true, reload: true
@@ -181,20 +189,20 @@ service 'nfs_rear' do
   only_if { platform_family?('rhel') && node['platform_version'].to_i == 6 }
 end
 
-# Start NFS statd daemon for RHEL 7:
+# Start NFS statd daemon for RHEL 7 or 8:
 service 'rpc-statd_rear' do
   service_name 'rpc-statd'
   supports status: true, restart: true, reload: true
   action [:enable, :start]
-  only_if { platform_family?('rhel') && node['platform_version'].to_i == 7 }
+  only_if { platform_family?('rhel') && node['platform_version'].to_i >= 7 }
 end
 
-# Start nfs-client for RHEL 7:
+# Start nfs-client for RHEL 7 or 8:
 service 'nfs-client.target_rear' do
   service_name 'nfs-client.target'
   supports status: true, restart: true, reload: true
   action [:enable, :start]
-  only_if { platform_family?('rhel') && node['platform_version'].to_i == 7 }
+  only_if { platform_family?('rhel') && node['platform_version'].to_i >= 7 }
 end
 
 if ::File.exist?('/etc/install/config')
