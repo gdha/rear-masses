@@ -9,10 +9,9 @@
 # file named site.conf next to this file and to leave the local.conf as it is.
 # Our packages will never ship with a site.conf.
 
-ONLY_INCLUDE_VG=<%= node['srv_001803_rear']['config']['only_include_vg'] %>
-BACKUP=<%= node['srv_001803_rear']['config']['backup'] %>
-BACKUP_URL=<%= node['srv_001803_rear']['config']['backup_url'] %><%= node['fqdn'] %>
-BACKUP_PROG_EXCLUDE=<%= node['srv_001803_rear']['config']['backup_prog_exclude'] %>
-NETFS_PREFIX=<%= node['srv_001803_rear']['config']['netfs_prefix'] %>
-NETFS_KEEP_OLD_BACKUP_COPY=<%= node['srv_001803_rear']['config']['netfs_keep_old_backup_copy'] %>
-AUTOEXCLUDE_DISKS=<%= node['srv_001803_rear']['config']['autoexclude_disks'] %>
+ONLY_INCLUDE_VG=<%= node['rear']['config']['only_include_vg'] %>
+BACKUP=<%= node['rear']['config']['backup'] %>
+BACKUP_URL=<%= node['rear']['config']['backup_url'] %><%= node['fqdn'] %>
+NETFS_PREFIX=<%= node['rear']['config']['netfs_prefix'] %>
+NETFS_KEEP_OLD_BACKUP_COPY=<%= node['rear']['config']['netfs_keep_old_backup_copy'] %>
+AUTOEXCLUDE_DISKS=<%= node['rear']['config']['autoexclude_disks'] %>
